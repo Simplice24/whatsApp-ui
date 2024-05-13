@@ -1,17 +1,47 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const WhatsAppHeader = () => {
+
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchIconPress = () => {
+    setShowSearch(true);
+  };
+
+  const handleSearch = () => {
+    console.log('Search Query:', searchQuery);
+    setShowSearch(false);
+  };
+
   return (
     <View style={styles.container}>
+      {!showSearch && (
       <View style={styles.headerContainer}>
         <Text style={styles.title}>WhatsApp</Text>
         <View style={styles.iconsContainer}>
-          <Icon name="search" size={24} color="white" style={styles.icon} />
+          <TouchableOpacity onPress={handleSearchIconPress}>
+            <Icon name="search" size={24} color="white" style={styles.icon} />
+          </TouchableOpacity>
           <Icon name="ellipsis-v" size={24} color="white" style={styles.icon} />
         </View>
-      </View>
+      </View>)}
+      {showSearch && (
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search"
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
+            onSubmitEditing={handleSearch}
+          />
+          <TouchableOpacity onPress={handleSearch}>
+            <Icon name="search" size={24} color="white" style={styles.searchIcon} />
+          </TouchableOpacity>
+        </View>
+      )}
       <View style={styles.navLinks}>
         <View style={styles.cameraContainer}>
           <Icon name="camera" size={24} color="white" style={styles.cameraIcon} />
@@ -97,6 +127,24 @@ const styles = StyleSheet.create({
   },
   cameraIcon: {
     marginRight: 5,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginBottom: 10,
+    marginTop:50,
+  },
+  searchInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    color: 'white',
+  },
+  searchIcon: {
+    marginLeft: 10,
   },
 });
 
